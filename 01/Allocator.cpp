@@ -21,7 +21,7 @@ public:
         }
         this->maxSize = maxSize;
         this->offset = 0;
-        this->pointer = new char(maxSize);
+        this->pointer = new char[maxSize];
     }
 
     // Возвращает указатель на блок запрошенного размера или nullptr
