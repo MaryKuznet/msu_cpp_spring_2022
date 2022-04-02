@@ -9,38 +9,38 @@ public:
 
     // Конструктор
     Allocator(){
-        this->maxSize = 0;
-        this->offset = 0;
-        this->pointer = nullptr;
+        maxSize = 0;
+        offset = 0;
+        pointer = nullptr;
     }
 
     // Аллоцируется динамическая память указанного размера
     void makeAllocator(size_t maxSize){
-        if (this->pointer != nullptr){
-            delete this->pointer;
+        if (pointer != nullptr){
+            delete [] pointer;
         }
         this->maxSize = maxSize;
-        this->offset = 0;
-        this->pointer = new char[maxSize];
+        offset = 0;
+        pointer = new char[maxSize];
     }
 
     // Возвращает указатель на блок запрошенного размера или nullptr
     char* alloc(size_t size){
-        if ((this->offset + size > this->maxSize) || (size == 0)){
+        if ((offset + size > maxSize) || (size == 0)){
             return nullptr;
         }
-        char *temp = this->pointer + this->offset;
-        this->offset += size;
+        char *temp = pointer + offset;
+        offset += size;
         return temp;
     }
 
     // Позволяет использовать свою память снова
     void reset(){
-        this->offset = 0;
+        offset = 0;
     }
     
     // Это деструктор
     ~Allocator(){
-        delete this->pointer;
+        delete [] pointer;
     }
 };
