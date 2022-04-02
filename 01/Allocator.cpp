@@ -20,12 +20,13 @@ public:
             delete this->pointer;
         }
         this->maxSize = maxSize;
+        this->offset = 0;
         this->pointer = new char(maxSize);
     }
 
     // Возвращает указатель на блок запрошенного размера или nullptr
     char* alloc(size_t size){
-        if (this->offset + size > this->maxSize){
+        if ((this->offset + size > this->maxSize) || (size == 0)){
             return nullptr;
         }
         char *temp = this->pointer + this->offset;

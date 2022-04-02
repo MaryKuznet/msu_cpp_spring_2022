@@ -24,7 +24,17 @@ int main(){
     A.reset();
     char* ptr3 = A.alloc(7);
     ptr3 = (char*) "abcdefg";
-    std::cout<<ptr3<<std::endl;
+    std::cout<< ptr3 <<std::endl;
+
+    // Смотрим как меняются поля класса
+	A.makeAllocator(1);
+	ptr3 = A.alloc(1);
+    std::cout<< A.offset << ' ' << A.maxSize <<std::endl;
+	ptr3 = A.alloc(1);
+    std::cout<< A.offset << ' ' << A.maxSize <<std::endl;
+    if (ptr3 == nullptr){
+        std::cout<<"null"<<std::endl;
+    }
     
     return 0;
 }
