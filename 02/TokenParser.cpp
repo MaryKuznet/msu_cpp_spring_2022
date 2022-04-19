@@ -2,27 +2,26 @@
 #include <string>
 #include <iostream>
 
-void TokenParser::SetStartCallback(std::string (*fb)()){
+void TokenParser::SetStartCallback(FuncBeginEnd fb){
     this->fb = fb;
 }
 
-void TokenParser::SetEndCallback(std::string (*fe)()){
+void TokenParser::SetEndCallback(FuncBeginEnd fe){
     this->fe = fe;
 }
 
-void TokenParser::SetDigitTokenCallback(long int (*fi)(long int)){
+void TokenParser::SetDigitTokenCallback(FuncInt fi){
     this->fi = fi;
 }
 
-void TokenParser::SetStringTokenCallback(int (*fs)(std::string)){
+void TokenParser::SetStringTokenCallback(FuncString fs){
     this->fs = fs;
 }
 
-std::string TokenParser::Parse(const std::string & line){
-    std::string check = "";
+void TokenParser::Parse(const std::string & line){
 
     if (fb != nullptr) {
-        check += fb() + " ";
+        fb();
     }
 
     int i = 0;
@@ -46,15 +45,13 @@ std::string TokenParser::Parse(const std::string & line){
         // Применяем функции к токенам
         if (word != ""){
             if (isdig == true){
-                long int digit = std::stol(word);
-                std::cout << "Integer: " << digit << std::endl;
-                if (fi != nullptr) {
-                    check += std::to_string(digit) + ":" + std::to_string(fi(digit)) + " ";
+                long int digit = std::stoull(word);
+                if (fi != nullptr){
+                    fi(digit);
                 }
-            } else{
-                std::cout << "word:"<< word << std::endl;
+            }else{
                 if (fs != nullptr) {
-                    check += word + ":" + std::to_string(fs(word)) + " ";
+                    fs(word);
                 }
             }
         }
@@ -62,8 +59,6 @@ std::string TokenParser::Parse(const std::string & line){
     };
 
     if (fe != nullptr) {
-        check += fe();
-    };
-
-    return check;
+        fe();
+    }
 }

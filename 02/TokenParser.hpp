@@ -1,6 +1,7 @@
+#pragma once
 #include <iostream>
 
-typedef long int (*FuncInt)(long int);
+typedef uint64_t (*FuncInt)(uint64_t);
 typedef int (*FuncString)(std::string);
 typedef std::string (*FuncBeginEnd)();
 
@@ -14,17 +15,17 @@ public:
     TokenParser() = default;
 
     // Устанавливаем callback-функцию перед стартом парсинга.
-    void SetStartCallback(std::string (*fb)());
+    void SetStartCallback(FuncBeginEnd fb);
 
     // Устанавливаем callback-функцию после окончания парсинга.
-    void SetEndCallback(std::string (*fe)());
+    void SetEndCallback(FuncBeginEnd fe);
 
     // Устанавливаем callback-функцию для обработки чисел.
-    void SetDigitTokenCallback(long int (*fi)(long int));
+    void SetDigitTokenCallback(FuncInt fi);
 
     // Устанавливаем callback-функцию для обработки строк.
-    void SetStringTokenCallback(int (*fs)(std::string));
+    void SetStringTokenCallback(FuncString fs);
 
     // Парсер строк.
-    std::string Parse(const std::string & line);
+    void Parse(const std::string & line);
 };
