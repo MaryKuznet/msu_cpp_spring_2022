@@ -137,8 +137,15 @@ TEST_F(TestTokenParser, Test6){
     out = testing::internal::GetCapturedStdout();
     ASSERT_STREQ(out.c_str(), "Begin d:18446744073709551615 w:abc End\n");
 
-    ASSERT_ANY_THROW(parser.Parse("18446744073709551616"));
-    ASSERT_ANY_THROW(parser.Parse("36893488147419103232"));
+    testing::internal::CaptureStdout();
+    parser.Parse("18446744073709551616 abc");
+    out = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(out.c_str(), "Begin w:18446744073709551616 w:abc End\n");
+
+    testing::internal::CaptureStdout();
+    parser.Parse("36893488147419103232 abc");
+    out = testing::internal::GetCapturedStdout();
+    ASSERT_STREQ(out.c_str(), "Begin w:36893488147419103232 w:abc End\n");
 
     // Тесты смешанных строк
     parser.SetStartCallback(nullptr);

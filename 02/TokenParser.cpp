@@ -45,8 +45,17 @@ void TokenParser::Parse(const std::string & line){
         // Применяем функции к токенам
         if (word != ""){
             if (isdig == true){
-                long int digit = std::stoull(word);
-                if (fi != nullptr){
+                long int digit = 0;
+                try{
+                    digit = std::stoull(word);
+                }
+                catch(std::out_of_range const& e){
+                    isdig = false;
+                    if (fs != nullptr) {
+                        fs(word);
+                    }
+                }
+                if ((isdig == true) && (fi != nullptr)){
                     fi(digit);
                 }
             }else{
